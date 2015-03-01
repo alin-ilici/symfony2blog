@@ -1,0 +1,24 @@
+home: Acasa
+
+on: pe
+by: de
+read.more: Citeste mai mult
+name: Nume
+send: Trimite
+
+post:
+  plural: Postari
+  latest: Ultimele postari
+  on: Postat la
+  by: Postat de
+  by.author: Postat de %name%
+  comments: '{0} Nici un comentariu|{1} %count% comentariu|]1,Inf] %count% comentarii'
+
+comment:
+  singular: Comentariu
+  plural: Comentarii
+  write: Scrie un comentariu
+
+author:
+  title: Autor
+  empty.posts: Acest autor nu a scris inca nici un post.
