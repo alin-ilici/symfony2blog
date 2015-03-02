@@ -2,6 +2,7 @@
 
 namespace Blog\CoreBundle\Controller;
 
+use Blog\CoreBundle\Services\AuthorManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -9,6 +10,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class AuthorController
+ *
+ * @Route("/{_locale}/author", requirements={"_locale"="en|ro"}, defaults={"_locale"="en"})
  */
 class AuthorController extends Controller
 {
@@ -20,30 +23,27 @@ class AuthorController extends Controller
      * @throws NotFoundHttpException
      * @return array
      *
-     * @Route("/author/{slug}")
+     * @Route("/{slug}")
      * @Template()
      */
     public function showAction($slug)
     {
-        $author = $this->getDoctrine()->getRepository('ModelBundle:Author')->findOneBy(
-            array(
-                'slug' => $slug
-            )
-        );
-
-        if ($author === null) {
-            throw $this->createNotFoundException();
-        }
-
-        $posts = $this->getDoctrine()->getRepository('ModelBundle:Post')->findBy(
-            array(
-                'author' => $author
-            )
-        );
+        $author = $this->getAuthorManager()->findBySlug($slug);
+        $posts = $this->getAuthorManager()->findPosts($author);
 
         return array(
             'author' => $author,
             'posts' => $posts
         );
+    }
+
+    /**
+     * Get Author manager
+     *
+     * @return AuthorManager
+     */
+    private function getAuthorManager()
+    {
+        return $this->get('authorManager');
     }
 }
